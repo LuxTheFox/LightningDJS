@@ -1,4 +1,4 @@
-import { Client } from "../";
+import { Client } from ".";
 import {
   CacheType,
   CommandInteraction,
@@ -16,7 +16,7 @@ interface ExecuteOptions {
 type ExecuteFunction = (options: ExecuteOptions) => unknown;
 
 export type ICommand = {
-  category: string;
+  category?: string;
   usage: string;
   requiredPermissions?: PermissionResolvable[];
   requiredRoles?: RoleResolvable[];

@@ -1,7 +1,6 @@
-import { Client } from "..";
+import { Client, ICommand, IEvent } from "../Structs";
 import fs, { PathLike } from "fs";
 import path from "path";
-import { ICommand } from "../Structs";
 
 export interface CommandRegistarOptions {
   CommandPath: PathLike;
@@ -9,10 +8,11 @@ export interface CommandRegistarOptions {
 }
 export async function initiateCommands(
   client: Client,
+  defaultCommands: Client["defaultCommands"],
   options: CommandRegistarOptions
 ) {
   client.logger.debug(`Initiating Commands`);
-  await CacheCommands(client, options.CommandPath);
+  await CacheCommands(client, defaultCommands, options.CommandPath);
 
   client.logger.info(`Registering Commands`);
   await Register(
@@ -29,14 +29,39 @@ export async function initiateCommands(
 
 async function CacheCommands(
   client: Client,
+  defaultCommands: Client["defaultCommands"],
   cmdPath: PathLike
 ): Promise<Client["commands"]> {
+  import(path.join(__dirname, "..", "Handlers", "CommandHandler.js")).then(
+    (event: { default: IEvent }) => {
+      client.on(event.default.target.toString(), (data) => {
+        event.default.execute({
+          client: client,
+          data: data,
+        });
+      });
+    }
+  );
+
+  const defaultCommandsFiles = fs.readdirSync(path.join(__dirname, "..", "Commands")).filter(i => i.endsWith(".js"));
+  for (let i = 0; i < defaultCommandsFiles.length; i++) {
+    import(path.join(__dirname, "..", "Commands", defaultCommandsFiles[i]))
+      .then((i: { default: ICommand }) => {
+        if (!Object.keys(defaultCommands).includes(i.default.name)) return;
+        const category = defaultCommands[i.default.name as keyof typeof defaultCommands]?.[0];
+        const description = defaultCommands[i.default.name as keyof typeof defaultCommands]?.[1]
+        if (category) i.default.category = category;
+        if (description) i.default.description = description;
+        client.commands.set(i.default.name, i.default);
+    });
+  };
+
   client.logger.debug(`Reading Commands path`);
   const commandFolders = fs.readdirSync(cmdPath);
   for (let i = 0; i < commandFolders.length; i++) {
     const Folder = commandFolders[i];
     if (fs.lstatSync(path.join(cmdPath.toString(), Folder)).isDirectory())
-      await CacheCommands(client, path.join(cmdPath.toString(), Folder));
+      await CacheCommands(client, defaultCommands, path.join(cmdPath.toString(), Folder));
     else
       await import(path.join(cmdPath.toString(), Folder)).then(
         async (command: { default: ICommand }) => {
@@ -45,7 +70,7 @@ async function CacheCommands(
               client.commands.set(command.default.name, command.default);
             },
             (rej) => {
-              client.logger.error(
+              client.logger.error( 
                 `Rejected Command "${command.default.name}" with reason: ${rej}`
               );
             }
@@ -84,7 +109,6 @@ async function Register(client: Client, DevGuild?: string): Promise<number> {
   const app = DevGuild
     ? await client.guilds.fetch(DevGuild)
     : await client.application?.fetch();
-
   const commandsData = [];
   for (let i = 0; i < client.commands.size; i++) {
     const command = client.commands.at(i);

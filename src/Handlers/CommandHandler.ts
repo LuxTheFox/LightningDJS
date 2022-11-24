@@ -1,6 +1,5 @@
 import { ChannelType, CommandInteraction, EmbedBuilder } from "discord.js";
-import { Client, Event } from "..";
-import { ICommand } from "../Structs";
+import { ICommand, Event, Client } from "../Structs";
 
 export default new Event({
   target: "interactionCreate",

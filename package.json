@@ -1,12 +1,12 @@
 {
   "name": "lightningdjs",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "LightningDJS handles slash-commands/events for DiscordJS V14 Bots.",
   "main": "dist/index.js",
   "scripts": {
-    "clean": "del /F /Q dist && tsc",
+    "clean": "rmdir /s /q dist && tsc",
     "build": "yarn clean && tsc",
-    "start": "cd test && ts-node index.ts"
+    "start": "cd test && node index.js"
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,4 @@
-import { IEvent, Client } from "../Structs";
+import { Client, IEvent } from "../Structs";
 import fs, { PathLike } from "fs";
 import path from "path";
 

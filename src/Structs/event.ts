@@ -1,5 +1,5 @@
 import { ClientEvents } from "discord.js";
-import { Client } from "../";
+import { Client } from ".";
 
 interface ExecuteOptions<T extends keyof ClientEvents = keyof ClientEvents> {
   client: Client;

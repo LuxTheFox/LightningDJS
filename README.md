@@ -7,6 +7,7 @@
 ## **Description**
 LightningDJS handles slash-commands/events for DiscordJS V14 Bots.
 
+**Documentation**: 
 #
 ## **Use**
 If you would like to create a Discord.js V14 Discord bot with ease
