@@ -20,8 +20,8 @@ export async function initiateCommands(
   await Register(
     client,
     options.DevGuildID ? options.DevGuildID : undefined
-  ).then((num) => {
-    import(path.join(__dirname, "..", "Handlers", "CommandHandler.js")).then(
+  ).then(async(num) => {
+    await import(path.join(__dirname, "..", "Handlers", "CommandHandler.js")).then(
       (event: { default: IEvent }) => {
         client.on(event.default.target.toString(), (data) => {
           event.default.execute({
@@ -109,12 +109,16 @@ async function ValidateCommand(command: ICommand): Promise<string> {
 };
 
 export async function Reregister(client: Client, DefaultCommands: Client["defaultCommands"]) {
-  const app = SavedOptions.DevGuildID
-  ? await client.guilds.fetch(SavedOptions.DevGuildID)
-  : await client.application?.fetch();
-
+  client.logger.info(`Registering Commands`);
+  client.commands.clear();
   await CacheCommands(client, DefaultCommands, SavedOptions.CommandPath);
-  await Register(client, SavedOptions.DevGuildID);
+  await Register(client, SavedOptions.DevGuildID)
+    .then(num => {
+      client.logger.info(
+        `Registered ${num}/${client.commands.size} Commands`
+      );
+    });
+  return client.commands.size;
 };
 
 async function Register(client: Client, DevGuild?: string): Promise<number> {

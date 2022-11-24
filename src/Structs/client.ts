@@ -74,21 +74,21 @@ export class Client<T extends boolean = boolean> extends DJSClient<T> {
       options.CommandPath.toString()
     );
     if (!this.isReady())
-      return this.logger.error("Please login before using AutoCommands");
-    this.logger.debug("AutoCommands Ran");
+      return this.logger.error("Please login before using LoadCommands");
+    this.logger.debug("LoadCommands Ran");
     return await Registar.RegisterCommands(this, this.defaultCommands, options);
   };
   public async ReloadCommands(): Promise<number | void> { 
     if (!this.isReady())
-      return this.logger.error("Please login before using AutoCommands");
-    this.logger.debug("AutoCommands Ran");
+      return this.logger.error("Please login before using ReloadCommands");
+    this.logger.debug("ReloadCommands Ran");
     return await Registar.ReregisterCommands(this, this.defaultCommands);
   };
   public async LoadEvents(options: EventRegistarOptions): Promise<number | void> {
     options.EventPath = path.join(process.cwd(), options.EventPath.toString());
     if (!this.isReady())
-      return this.logger.error("Please login before using AutoEvents");
-    this.logger.debug("AutoEvents Ran");
+      return this.logger.error("Please login before using LoadEvents");
+    this.logger.debug("LoadEvents Ran");
     return await Registar.RegisterEvents(this, options);
   };
 
