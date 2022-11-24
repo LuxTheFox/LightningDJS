@@ -1,8 +1,9 @@
-import { initiateCommands, CommandRegistarOptions } from "./CommandRegistar";
+import { initiateCommands, Reregister ,CommandRegistarOptions } from "./CommandRegistar";
 import { initiateEvents, EventRegistarOptions } from "./EventRegistar";
 
 const Registar = {
   RegisterCommands: initiateCommands,
+  ReregisterCommands: Reregister,
   RegisterEvents: initiateEvents,
 };
 

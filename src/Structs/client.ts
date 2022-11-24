@@ -66,7 +66,7 @@ export class Client<T extends boolean = boolean> extends DJSClient<T> {
         ]})
       }
     });
-  }
+  };
 
   public async LoadCommands(options: CommandRegistarOptions): Promise<number | void> {
     options.CommandPath = path.join(
@@ -77,17 +77,23 @@ export class Client<T extends boolean = boolean> extends DJSClient<T> {
       return this.logger.error("Please login before using AutoCommands");
     this.logger.debug("AutoCommands Ran");
     return await Registar.RegisterCommands(this, this.defaultCommands, options);
-  }
-  public LoadEvents(options: EventRegistarOptions) {
+  };
+  public async ReloadCommands(): Promise<number | void> { 
+    if (!this.isReady())
+      return this.logger.error("Please login before using AutoCommands");
+    this.logger.debug("AutoCommands Ran");
+    return await Registar.ReregisterCommands(this, this.defaultCommands);
+  };
+  public async LoadEvents(options: EventRegistarOptions): Promise<number | void> {
     options.EventPath = path.join(process.cwd(), options.EventPath.toString());
     if (!this.isReady())
       return this.logger.error("Please login before using AutoEvents");
     this.logger.debug("AutoEvents Ran");
-    Registar.RegisterEvents(this, options);
-  }
+    return await Registar.RegisterEvents(this, options);
+  };
 
   public login(token?: string | undefined): Promise<string> {
     const result = super.login(token);
     return result;
-  }
-}
+  };
+};

@@ -1,11 +1,11 @@
-# **LightningDJS**
+# **⚡LightningDJS**
 
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg?color=blue&label=License)](https://www.gnu.org/licenses/gpl-3.0)
 [![Version](https://img.shields.io/npm/v/lightningdjs?color=blue&label=Version)](https://www.npmjs.com/package/lightningdjs)
 [![Downloads](https://img.shields.io/npm/dt/lightningdjs?color=blue&label=Downloads)](https://www.npmjs.com/package/lightningdjs)
 
 ## **Description**
-LightningDJS handles slash-commands/events for DiscordJS V14 Bots.
+⚡LightningDJS handles slash-commands/events for DiscordJS V14 Bots.
 
 **Documentation**: 
 #

@@ -20,7 +20,7 @@ export type ICommand = {
   usage: string;
   requiredPermissions?: PermissionResolvable[];
   requiredRoles?: RoleResolvable[];
-  bannedRolse?: RoleResolvable[];
+  bannedRoles?: RoleResolvable[];
   ownerOnly?: boolean;
   devOnly?: boolean;
   nsfw?: boolean;

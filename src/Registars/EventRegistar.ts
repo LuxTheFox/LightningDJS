@@ -13,9 +13,10 @@ export async function initiateEvents(
   await CacheEvents(client, options.EventPath);
 
   client.logger.info(`Registering Events`);
-  Register(client).then((num) => {
+  return Register(client).then((num) => {
     client.logger.info(`Registered ${num}/${client.events.size} Events`);
     client.emit("onEventsLoaded", client.events);
+    return num
   });
 }
 

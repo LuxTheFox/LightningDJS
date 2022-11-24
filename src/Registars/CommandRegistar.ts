@@ -2,6 +2,8 @@ import { Client, ICommand, IEvent } from "../Structs";
 import fs, { PathLike } from "fs";
 import path from "path";
 
+let SavedOptions: CommandRegistarOptions;
+
 export interface CommandRegistarOptions {
   CommandPath: PathLike;
   DevGuildID?: string;
@@ -19,11 +21,23 @@ export async function initiateCommands(
     client,
     options.DevGuildID ? options.DevGuildID : undefined
   ).then((num) => {
+    import(path.join(__dirname, "..", "Handlers", "CommandHandler.js")).then(
+      (event: { default: IEvent }) => {
+        client.on(event.default.target.toString(), (data) => {
+          event.default.execute({
+            client: client,
+            data: data,
+          });
+        });
+      }
+    );
+
     client.logger.info(
       `Registered ${num}/${client.commands.size} Commands`
     );
     client.emit("onCommandsLoaded", client.commands);
   });
+  SavedOptions = options;
   return client.commands.size;
 }
 
@@ -32,17 +46,6 @@ async function CacheCommands(
   defaultCommands: Client["defaultCommands"],
   cmdPath: PathLike
 ): Promise<Client["commands"]> {
-  import(path.join(__dirname, "..", "Handlers", "CommandHandler.js")).then(
-    (event: { default: IEvent }) => {
-      client.on(event.default.target.toString(), (data) => {
-        event.default.execute({
-          client: client,
-          data: data,
-        });
-      });
-    }
-  );
-
   const defaultCommandsFiles = fs.readdirSync(path.join(__dirname, "..", "Commands")).filter(i => i.endsWith(".js"));
   for (let i = 0; i < defaultCommandsFiles.length; i++) {
     import(path.join(__dirname, "..", "Commands", defaultCommandsFiles[i]))
@@ -103,6 +106,15 @@ async function ValidateCommand(command: ICommand): Promise<string> {
 
     res("");
   });
+};
+
+export async function Reregister(client: Client, DefaultCommands: Client["defaultCommands"]) {
+  const app = SavedOptions.DevGuildID
+  ? await client.guilds.fetch(SavedOptions.DevGuildID)
+  : await client.application?.fetch();
+
+  await CacheCommands(client, DefaultCommands, SavedOptions.CommandPath);
+  await Register(client, SavedOptions.DevGuildID);
 };
 
 async function Register(client: Client, DevGuild?: string): Promise<number> {

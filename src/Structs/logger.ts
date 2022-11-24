@@ -1,15 +1,15 @@
 import { colors } from "../Enums";
 
 export class logger {
-  private debugOption: boolean;
-  constructor(debug: boolean) {
-    this.debugOption = debug;
+  public DebugToggle: boolean;
+  constructor(DebugToggle: boolean) {
+    this.DebugToggle = DebugToggle;
   }
   info(message: string) {
     return console.log(`[${colors.FgCyan}INFO${colors.Reset}] - ${message}`);
   }
   debug(message: string) {
-    return this.debugOption
+    return this.DebugToggle
       ? console.log(`[${colors.FgMagenta}DEBUG${colors.Reset}] - ${message}`)
       : "";
   }
@@ -26,9 +26,9 @@ export class logger {
   error(message: string) {
     return console.log(`[${colors.FgRed}ERROR${colors.Reset}] - ${message}`);
   }
-  custom(phrase: string, color: keyof typeof colors, message: string) {
+  custom(type: string, color: keyof typeof colors, message: string) {
     return console.log(
-      `[${colors[color]}${phrase}${colors.Reset}] - ${message}`
+      `[${colors[color]}${type}${colors.Reset}] - ${message}`
     );
   }
 }
