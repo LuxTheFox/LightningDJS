@@ -1,5 +1,7 @@
-# LightningDJS
-- LightningDJS is a simple to use and powerful handler for DiscordJS V14 Events and Commands!
+# ⚡LightningDJS
+- ⚡LightningDJS is a simple to use and useful handler for DiscordJS V14 Events and Commands!
+
+### Completely rewritten!
 
 > #### [Goto the introductions!](/introduction.md)
 > - [Check out the github!](https://github.com/LuxTheFox/LightningDJS)
