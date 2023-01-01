@@ -5,12 +5,10 @@
 */
 
 import { Command, Event, CustomEvent, ExtendedClient } from './structs';
-import { ExtendClient } from './structs/ExtendedClient';
 
 export {
     Command,
     Event,
     CustomEvent,
-    ExtendedClient,
-    ExtendClient
+    ExtendedClient
 }

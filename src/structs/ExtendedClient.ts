@@ -11,11 +11,7 @@ import { EmbedManager } from "./embedManager";
 import { CommandManager } from "../managers";
 import CLIColour from 'cli-color';
 
-export class ExtendClient<T extends boolean = boolean> extends Client<T> {
-    ExtendClient = () => { return 'Required Function' };
-};
-
-export class ExtendedClient<T extends boolean = boolean> extends ExtendClient<T> {
+export class ExtendedClient<T extends boolean = boolean> extends Client<T> {
     
     private ready: boolean = false;
     commands: Collection<string, ICommand> = new Collection();
