@@ -1,6 +1,6 @@
 {
   "name": "lightningdjs",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "LightningDJS handles slash-commands/events for DiscordJS V14 Bots.",
   "main": "dist/index.js",
   "scripts": {

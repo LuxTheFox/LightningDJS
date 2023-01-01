@@ -4,10 +4,8 @@
     THANK YOU.
 */
 
-import { ICommand } from "../interfaces";
+import { ClientOptions } from "discord.js"
 
-export class Command {
-    constructor(options: ICommand) {
-        Object.assign(this, options);
-    };
+export interface IExtendedClient extends ClientOptions {
+    Developers: string[]
 };

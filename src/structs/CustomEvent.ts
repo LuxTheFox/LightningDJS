@@ -4,11 +4,10 @@
     THANK YOU.
 */
 
-import { ClientEvents } from "discord.js";
-import { IEvent } from "../interfaces";
+import { ICustomEvent } from "../interfaces";
 
-export class Event<T extends keyof ClientEvents = keyof ClientEvents> {
-    constructor(options: IEvent<T>) {
+export class CustomEvent {
+    constructor(options: ICustomEvent) {
         Object.assign(this, options);
     };
 };

@@ -4,10 +4,7 @@
     THANK YOU.
 */
 
-import { ICommand } from "../interfaces";
-
-export class Command {
-    constructor(options: ICommand) {
-        Object.assign(this, options);
-    };
+export interface ICommandManager {
+    path: string,
+    devGuild?: string
 };
