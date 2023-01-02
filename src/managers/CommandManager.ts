@@ -5,7 +5,7 @@
 */
 
 import { ICommand, ICommandManager } from "../interfaces";
-import { APIApplicationCommandSubcommandOption, ApplicationCommandOptionData, ApplicationCommandOptionType, ApplicationCommandSubCommandData, ApplicationCommandType, ChannelType, Collection, CommandInteraction, CommandInteractionOptionResolver } from "discord.js";
+import { APIApplicationCommandSubcommandOption, ApplicationCommandOptionData, ApplicationCommandOptionType, ApplicationCommandSubCommandData, ApplicationCommandType, ChannelType, Collection, CommandInteraction, CommandInteractionOption, CommandInteractionOptionResolver } from "discord.js";
 import { EmbedBuilder } from "@discordjs/builders";
 import { ExtendedClient } from "../structs";
 import path from 'path';
@@ -155,8 +155,11 @@ export class CommandManager {
                 });
                 return;
             };
+
+            let sub = false;
             if (cmd.usage.toLowerCase() == 'subcommand parent') {
                 cmd = (cmd.options?.find(i => i.name == (interaction.options as CommandInteractionOptionResolver)["_subcommand"])) as unknown as ICommand;
+                sub = true;
                 if (!cmd) return;
             };
 
@@ -168,11 +171,11 @@ export class CommandManager {
                 });
                 return;
             };
-
+            console.log('test')
             cmd.execute({
                 client: client, 
                 interaction: interaction,
-                args: interaction.options.data
+                args: ((sub) ? interaction.options.data[0]["options"] : interaction.options.data) as readonly CommandInteractionOption[]
             });
         });
     };
